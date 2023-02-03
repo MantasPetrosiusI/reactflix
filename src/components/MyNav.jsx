@@ -1,5 +1,11 @@
 import { Component } from "react";
-import { Navbar, Nav, InputGroup, FormControl } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  InputGroup,
+  FormControl,
+  NavDropdown,
+} from "react-bootstrap";
 import kids_logo from "../components/kids_icon.png";
 import logo from "../components/netflix_logo.png";
 
@@ -10,7 +16,6 @@ class MyNavbar extends Component {
 
   searchStringHandler = (e) => {
     if (e.keyCode === 13) {
-      // WHEN ENTER KEY IS PRESSED
       this.props.showSearchResult(this.state.searchString);
     } else {
       this.setState({ searchString: e.currentTarget.value });
@@ -19,7 +24,11 @@ class MyNavbar extends Component {
 
   render() {
     return (
-      <Navbar variant="dark" expand="lg" style={{ backgroundColor: "#221f1f" }}>
+      <Navbar
+        variant="dark"
+        expand="lg"
+        style={{ backgroundColor: "#221f1f", color: "black" }}
+      >
         <Navbar.Brand href="/">
           <img
             src={logo}
@@ -59,9 +68,15 @@ class MyNavbar extends Component {
             </InputGroup>
             <div id="kids">KIDS</div>
             <i className="fa fa-bell icons"></i>
-            <i>
-              <img src={kids_logo} id="logo" alt="logo" />
-            </i>
+            <NavDropdown
+              id="nav-dropdown-start"
+              title={<img src={kids_logo} id="logo" alt="logo" />}
+            >
+              <NavDropdown.Item href="#profile">Account</NavDropdown.Item>
+              <NavDropdown.Item href="#">Manage Movies</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#">Logout</NavDropdown.Item>
+            </NavDropdown>
           </span>
         </Navbar.Collapse>
       </Navbar>

@@ -51,11 +51,9 @@ class SingleMovie extends Component {
         method: "POST",
         body: JSON.stringify(this.state.newComment),
         headers: {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M5M2Q0OGU3MzczODAwMTUzNzQzOTkiLCJpYXQiOjE2NzU0MzA2NTcsImV4cCI6MTY3NjY0MDI1N30.W3KuuobH15SOMJC5dQxKAOlcHeIqweQxILWOaa0wP64",
-          },
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M5M2Q0OGU3MzczODAwMTUzNzQzOTkiLCJpYXQiOjE2NzU0MzA2NTcsImV4cCI6MTY3NjY0MDI1N30.W3KuuobH15SOMJC5dQxKAOlcHeIqweQxILWOaa0wP64",
         },
       });
       if (response.ok) {
@@ -91,7 +89,7 @@ class SingleMovie extends Component {
     return (
       <Col className="mb-2" key={this.props.data.imdbID}>
         <img
-          className="img-fluid"
+          className="img-fluid w-150 h-200"
           src={this.props.data.Poster}
           alt="movie"
           onClick={() => {
