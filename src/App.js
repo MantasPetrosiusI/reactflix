@@ -20,7 +20,6 @@ class App extends Component {
 
   url = "http://www.omdbapi.com/?i=tt3896198&apikey=988cf4d5";
   currUrl = document.URL;
-  if(currUrl) {}
   componentDidMount = () => {
     this.fetchMovies();
   };

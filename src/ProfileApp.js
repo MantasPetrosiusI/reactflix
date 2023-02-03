@@ -1,0 +1,1 @@
+class ProfileApp extends Component {}
