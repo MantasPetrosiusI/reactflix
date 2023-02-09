@@ -1,4 +1,5 @@
 import { Component } from "react";
+import {BrowserRouter as Router} from 'react-router-dom'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import "./styles.css";
@@ -24,51 +25,44 @@ class App extends Component {
     this.fetchMovies();
   };
 
-  fetchMovies = () => {
-    Promise.all([
-      fetch(this.url + "&s=star&20wars")
-        .then((response) => response.json())
-        .then((responseObject) => {
-          if (responseObject.Response === "True") {
-            this.setState({ gallery1: responseObject.Search });
-          } else {
-            this.setState({ error: true });
-          }
-        }),
-      fetch(this.url + "&s=harry")
-        .then((response) => response.json())
-        .then((responseObject) => {
-          if (responseObject.Response === "True") {
-            this.setState({ gallery2: responseObject.Search });
-          } else {
-            this.setState({ error: true });
-          }
-        }),
-      fetch(this.url + "&s=lord%20of%20the%20rings")
-        .then((response) => response.json())
-        .then((responseObject) => {
-          if (responseObject.Response) {
-            this.setState({ gallery3: responseObject.Search });
-          } else {
-            this.setState({ error: true });
-          }
-        }),
-      fetch(this.url + "&s=spider-man")
-        .then((response) => response.json())
-        .then((responseObject) => {
-          if (responseObject.Response) {
-            this.setState({ gallery4: responseObject.Search });
-          } else {
-            this.setState({ error: true });
-          }
-        }),
-    ])
-      .then(() => this.setState({ loading: false }))
-      .catch((err) => {
+  fetchMovies = async () => {
+  try {
+    const [response1, response2, response3, response4] = await Promise.all([
+      fetch(this.url + "&s=star&20wars"),
+      fetch(this.url + "&s=harry"),
+      fetch(this.url + "&s=lord%20of%20the%20rings"),
+      fetch(this.url + "&s=spider-man"),
+    ]);
+
+    if (response1.ok && response2.ok && response3.ok && response4.ok) {
+      const [data1, data2, data3, data4] = await Promise.all([
+        response1.json(),
+        response2.json(),
+        response3.json(),
+        response4.json(),
+      ]);
+      if (data1.Response === "True" && data2.Response === "True" && data3.Response === "True" && data4.Response === "True") {
+        this.setState({
+          gallery1: data1.Search,
+          gallery2: data2.Search,
+          gallery3: data3.Search,
+          gallery4: data4.Search,
+          error: false,
+        });
+      } else {
         this.setState({ error: true });
-        console.log("An error has occurred:", err);
-      });
-  };
+      }
+    } else {
+      this.setState({ error: true });
+    }
+  } catch (err) {
+    this.setState({ error: true });
+    console.log("An error has occurred:", err);
+  } finally {
+    this.setState({ loading: false });
+  }
+};
+
 
   showSearchResult = async (searchString) => {
     if (searchString === "") {
@@ -98,9 +92,10 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div><Router>
         <MyNavbar showSearchResult={this.showSearchResult} />
-        <Container fluid className="px-4">
+      </Router>
+          <Container fluid className="px-4">
           <div className="d-flex justify-content-between">
             <div className="d-flex">
               <h2 className="mb-4">Movies</h2>
@@ -163,6 +158,7 @@ class App extends Component {
           )}
           <MyFooter />
         </Container>
+        
       </div>
     );
   }

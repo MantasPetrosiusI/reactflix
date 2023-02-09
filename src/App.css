@@ -40,3 +40,6 @@
 NavDropdown.Item {
   color: black;
 }
+.mr-auto.navbar-nav>a{
+  text-decoration: none;
+}

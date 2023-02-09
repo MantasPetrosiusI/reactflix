@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import {
   Col,
   Modal,
@@ -18,14 +18,18 @@ class SingleMovie extends Component {
     error: false,
     newComment: {
       comment: "",
-      rate: "",
+      rate: 0,
       elementId: this.props.data.imdbID,
     },
   };
 
+  componentDidMount() {
+    this.fetchComments(this.props.data.imdbID);
+  }
+
   fetchComments = async (movieID) => {
     try {
-      const response = await fetch(url + movieID, {
+      const response = await fetch(`${url}${movieID}`, {
         headers: {
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M5M2Q0OGU3MzczODAwMTUzNzQzOTkiLCJpYXQiOjE2NzU0MzA2NTcsImV4cCI6MTY3NjY0MDI1N30.W3KuuobH15SOMJC5dQxKAOlcHeIqweQxILWOaa0wP64",
@@ -35,11 +39,11 @@ class SingleMovie extends Component {
         const comments = await response.json();
         this.setState({ error: false, comments });
       } else {
-        console.log("an error occurred");
+        console.error("An error occurred");
         this.setState({ error: true });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       this.setState({ error: true });
     }
   };
@@ -47,7 +51,7 @@ class SingleMovie extends Component {
   submitComment = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(url + this.props.data.imdbID, {
+      const response = await fetch(`${url}${this.props.data.imdbID}`, {
         method: "POST",
         body: JSON.stringify(this.state.newComment),
         headers: {
